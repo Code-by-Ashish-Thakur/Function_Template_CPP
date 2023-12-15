@@ -19,7 +19,7 @@ void BUILD(ll in, ll st, ll ed, ll a[], ll seg[])
         seg[in] = a[st];
         return;
     }
-    int mid = st + (ed - st) / 2;
+    int mid = st + (ed - st) >>1;
 
     BUILD(2 * in + 1, st, mid, a, seg);
     BUILD(2 * in + 2, mid + 1, ed, a, seg);
@@ -42,7 +42,7 @@ int QUERY(ll in, ll st, ll ed, ll l, ll r, ll seg[])
 
     // partial overlap
 
-    ll mid = st + (ed - st) / 2;
+    ll mid = st + (ed - st) >> 1;
 
     ll left = QUERY(2 * in + 1, st, mid, l, r, seg);
     ll right = QUERY(2 * in + 2, mid + 1, ed, l, r, seg);
@@ -58,7 +58,7 @@ void UPDATE(ll in, ll st, ll ed, ll idx, ll value, ll seg[])
         return;
     }
 
-    ll mid = st + (ed - st) / 2;
+    ll mid = st + (ed - st)>>1;
 
     if (idx <= mid)
     {
