@@ -1,0 +1,89 @@
+/*ॐ भूर्भुवः स्व तत्सवितुर्वरेण्यं
+भर्गो देवस्य धीमहि
+ धियो यो नः प्रचोदयात॥*/
+
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define mod 1000000007
+
+/*@ashish thakur */
+
+/*******************************SEGMENT TREE*****************************************/
+
+void BUILD(ll in, ll st, ll ed, ll a[], ll seg[])
+{
+    if (st == ed)
+    {
+        seg[in] = a[st];
+        return;
+    }
+    int mid = st + (ed - st) / 2;
+
+    BUILD(2 * in + 1, st, mid, a, seg);
+    BUILD(2 * in + 2, mid + 1, ed, a, seg);
+
+    seg[in] = min(seg[2 * in + 1], seg[2 * in + 2]);
+}
+
+int QUERY(ll in, ll st, ll ed, ll l, ll r, ll seg[])
+{
+
+    // no overlapping
+    // l r st ed or st ed l r
+    if (r < st || ed < l)
+        return INT_MAX;
+
+    // complete overlapping
+    // [l st ed r]
+    if (st >= l && ed <= r)
+        return seg[in];
+
+    // partial overlap
+
+    ll mid = st + (ed - st) / 2;
+
+    ll left = QUERY(2 * in + 1, st, mid, l, r, seg);
+    ll right = QUERY(2 * in + 2, mid + 1, ed, l, r, seg);
+
+    return min(left, right);
+}
+
+void UPDATE(ll in, ll st, ll ed, ll idx, ll value, ll seg[])
+{
+    if (st == ed)
+    {
+        seg[in] = value;
+        return;
+    }
+
+    ll mid = st + (ed - st) / 2;
+
+    if (idx <= mid)
+    {
+        UPDATE(2 * in + 1, st, mid, idx, value, seg);
+    }
+    else
+    {
+        UPDATE(2 * in + 2, mid + 1, ed, idx, value, seg);
+    }
+    seg[in] = min(seg[2 * in + 1], seg[2 * in + 2]);
+}
+
+void solve()
+{
+    ll n;
+    cin >> n;
+
+    ll a[n];
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+
+    ll seg[4 * n];
+}
+int main()
+{
+    solve();
+    return 0;
+}
