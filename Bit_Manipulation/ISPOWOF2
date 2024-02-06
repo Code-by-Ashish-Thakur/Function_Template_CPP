@@ -1,0 +1,31 @@
+/*ॐ भूर्भुवः स्व तत्सवितुर्वरेण्यं
+भर्गो देवस्य धीमहि
+ धियो यो नः प्रचोदयात॥*/
+
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+
+
+/*@ashish thakur */
+
+bool ISPOWOF2(ll n)
+{
+    if (n < 0)
+        return false;
+
+    int bits = __builtin_popcountll(n);
+
+    if (bits == 1)
+        return true;
+    return false;
+}
+
+int main() {
+    
+ll n; cin >> n;
+cout<<ISPOWOF2(n)<<endl;
+
+    return 0;
+}
