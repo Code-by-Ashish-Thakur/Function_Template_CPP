@@ -10,3 +10,39 @@ using namespace std;
 
 /*@ashish thakur */
 
+
+vector<int>Z_FUN(string& s) {
+    int n = s.length();
+    vector<int> z(n, 0);
+    int left = 0, right = 0;
+
+    for (int i = 1; i < n; ++i) {
+        if (i <= right) {
+            z[i] = min(right - i + 1, z[i - left]);
+        }
+
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]]) {
+            ++z[i];
+        }
+
+        if (i + z[i] - 1 > right) {
+            left = i;
+            right = i + z[i] - 1;
+        }
+    }
+
+    return z;
+}
+
+int main() {
+  string text = "abacabadabacaba";
+   vector<int> Z_arr = Z_FUN(text);
+
+// cout << "Z values for the string \"" << text << "\":\n";
+    for (int i = 0; i < Z_arr.size(); ++i) {
+        cout << Z_arr[i] << " ";
+    }
+
+    return 0;
+}
+
