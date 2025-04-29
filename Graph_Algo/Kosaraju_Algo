@@ -1,0 +1,106 @@
+/*ॐ भूर्भुवः स्व तत्सवितुर्वरेण्यं
+भर्गो देवस्य धीमहि
+ धियो यो नः प्रचोदयात॥*/
+
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+#define ll long long
+#define mod 1000000007
+
+/*@ashish thakur */
+// Motive: To find the strongly connected component it means
+// Strongly Connected Component is a subset of vertices where every vertex
+// in the subset is reachable from every other vertex in the same subset by traversing the directed edges
+
+/* How to find it:
+1-DFS on Original Graph: Record finish times.[sort according to finished time and store in stack]
+2-Transpose the Graph: Reverse all edges.
+3-DFS on Transposed Graph: Process nodes in order of decreasing finish times to find SCCs.
+*/
+
+void DFS(int src, vector<int> &vis, stack<int> &st, vector<vector<int>> &adj)
+{
+
+    vis[src] = 1;
+    for (auto it : adj[src])
+    {
+        if (!vis[it])
+        {
+            DFS(it, vis, st, adj);
+        }
+    }
+    st.push(src);
+}
+// DFS on reverse graph
+void RevDFS(int src, vector<int> &vis, vector<vector<int>> &adjT)
+{
+    vis[src] = 1;
+    for (auto it : adjT[src])
+    {
+        if (!vis[it])
+        {
+            RevDFS(it, vis, adjT);
+        }
+    }
+}
+
+int kosaraju(vector<vector<int>> &adj)
+{
+
+    int n = adj.size();
+    stack<int> st; // store th finished time
+    vector<int> vis(n, 0);
+    for (int i = 0; i < n; i++)
+    {
+        if (!vis[i])
+        {
+            DFS(i, vis, st, adj);
+        }
+    }
+
+    // take the transpose or revers the edge
+
+    vector<vector<int>> adjT(n);
+
+    for (int u = 0; u < n; u++)
+    {
+        for (auto v : adj[u])
+        {
+            adjT[v].push_back(u);
+        }
+    }
+
+    fill(vis.begin(), vis.end(), 0);
+
+    int ct = 0;
+    while (!st.empty())
+    {
+        int node = st.top();
+        st.pop();
+        for (auto it : adjT[node])
+        {
+
+            if (!vis[node])
+            {
+                RevDFS(node, vis, adjT);
+                ct++;
+            }
+        }
+    }
+    return ct;
+}
+
+int main()
+{
+    int n = 5;
+    vector<vector<int>> adj(n);
+    adj[0] = {1};
+    adj[1] = {2};
+    adj[2] = {0, 3};
+    adj[3] = {4};
+    adj[4] = {};
+
+    cout << kosaraju(adj) << endl;
+    return 0;
+}
